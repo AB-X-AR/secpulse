@@ -26,6 +26,30 @@
         .slide-in {
             animation: slideIn 0.5s ease-out forwards;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .expanded-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .expanded-details.active {
+            max-height: 1000px;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen text-white">
@@ -45,7 +69,7 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-medium text-sm">
+                    <button onclick="openSubscribeModal()" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-medium text-sm">
                         Subscribe to Newsletter
                     </button>
                 </div>
@@ -118,8 +142,8 @@
                     <label class="text-sm text-gray-400 mb-1 block">&nbsp;</label>
                     <div class="flex items-center space-x-2">
                         <span class="text-sm text-gray-400">Auto-refresh</span>
-                        <div class="w-12 h-6 bg-cyan-600 rounded-full relative cursor-pointer">
-                            <div class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
+                        <div id="autoRefreshToggle" onclick="toggleAutoRefresh()" class="w-12 h-6 bg-cyan-600 rounded-full relative cursor-pointer transition-all">
+                            <div id="autoRefreshSlider" class="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all"></div>
                         </div>
                     </div>
                 </div>
@@ -144,8 +168,215 @@
         </div>
     </section>
 
+    <!-- Subscribe Modal -->
+    <div id="subscribeModal" class="modal">
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-cyan-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-white">Subscribe to SecPulse</h3>
+                <button onclick="closeSubscribeModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <p class="text-gray-300 mb-6">Get daily CVE intelligence delivered to your inbox. Stay ahead of critical vulnerabilities.</p>
+            
+            <form onsubmit="handleSubscribe(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Email Address</label>
+                    <input type="email" id="subscribeEmail" required placeholder="you@example.com" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Frequency</label>
+                    <select class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                        <option>Daily Digest</option>
+                        <option>Weekly Summary</option>
+                        <option>Real-time Alerts (Critical only)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Severity Filter</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center text-sm text-gray-300">
+                            <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
+                            Critical (9.0+)
+                        </label>
+                        <label class="flex items-center text-sm text-gray-300">
+                            <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
+                            High (7.0-8.9)
+                        </label>
+                        <label class="flex items-center text-sm text-gray-300">
+                            <input type="checkbox" class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
+                            Medium (4.0-6.9)
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
+                    Subscribe Now
+                </button>
+            </form>
+
+            <p class="text-xs text-gray-500 mt-4 text-center">No spam. Unsubscribe anytime.</p>
+        </div>
+    </div>
+
+    <!-- Category Subscribe Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-blue-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-white">Subscribe to Category</h3>
+                <button onclick="closeCategoryModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <p class="text-gray-300 mb-6">Get alerts for similar vulnerabilities in this category.</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="bg-slate-700/30 rounded-lg p-3 border border-slate-600/50">
+                    <div class="text-sm text-gray-400">Category</div>
+                    <div id="categoryName" class="text-white font-semibold">Web Application</div>
+                </div>
+                <div class="bg-slate-700/30 rounded-lg p-3 border border-slate-600/50">
+                    <div class="text-sm text-gray-400">Vendor</div>
+                    <div id="vendorName" class="text-white font-semibold">Microsoft</div>
+                </div>
+            </div>
+
+            <button onclick="handleCategorySubscribe()" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold">
+                Subscribe to Similar CVEs
+            </button>
+        </div>
+    </div>
+
     <script>
         let currentTab = 'active';
+        let autoRefreshEnabled = true;
+        let refreshInterval = null;
+        let expandedCVEs = new Set();
+
+        // Auto-refresh functionality
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = !autoRefreshEnabled;
+            const toggle = document.getElementById('autoRefreshToggle');
+            const slider = document.getElementById('autoRefreshSlider');
+            
+            if (autoRefreshEnabled) {
+                toggle.classList.add('bg-cyan-600');
+                toggle.classList.remove('bg-slate-600');
+                slider.classList.add('right-0.5');
+                slider.classList.remove('left-0.5');
+                startAutoRefresh();
+                showNotification('Auto-refresh enabled', 'success');
+            } else {
+                toggle.classList.remove('bg-cyan-600');
+                toggle.classList.add('bg-slate-600');
+                slider.classList.remove('right-0.5');
+                slider.classList.add('left-0.5');
+                stopAutoRefresh();
+                showNotification('Auto-refresh disabled', 'info');
+            }
+        }
+
+        function startAutoRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(() => {
+                showNotification('Checking for new CVEs...', 'info');
+                // Simulate refresh - in production this would fetch new data
+                setTimeout(() => {
+                    showNotification('You\'re up to date!', 'success');
+                }, 1000);
+            }, 120000); // Every 2 minutes (demo - production would be 2 hours)
+        }
+
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+
+        // Modal functions
+        function openSubscribeModal() {
+            document.getElementById('subscribeModal').classList.add('active');
+        }
+
+        function closeSubscribeModal() {
+            document.getElementById('subscribeModal').classList.remove('active');
+        }
+
+        function openCategoryModal(category, vendor) {
+            document.getElementById('categoryName').textContent = category;
+            document.getElementById('vendorName').textContent = vendor;
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            const subscribeModal = document.getElementById('subscribeModal');
+            const categoryModal = document.getElementById('categoryModal');
+            if (event.target === subscribeModal) {
+                closeSubscribeModal();
+            }
+            if (event.target === categoryModal) {
+                closeCategoryModal();
+            }
+        }
+
+        // Form submission
+        function handleSubscribe(event) {
+            event.preventDefault();
+            const email = document.getElementById('subscribeEmail').value;
+            showNotification(`Subscribed successfully! Welcome to SecPulse, ${email}`, 'success');
+            closeSubscribeModal();
+            document.getElementById('subscribeEmail').value = '';
+        }
+
+        function handleCategorySubscribe() {
+            const category = document.getElementById('categoryName').textContent;
+            showNotification(`Subscribed to ${category} CVE alerts!`, 'success');
+            closeCategoryModal();
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'from-green-500 to-green-700',
+                error: 'from-red-500 to-red-700',
+                info: 'from-blue-500 to-blue-700'
+            };
+            
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-4 bg-gradient-to-r ${colors[type]} rounded-lg shadow-2xl text-white font-medium slide-in`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Toggle CVE details
+        function toggleDetails(cveId) {
+            const detailsElement = document.getElementById(`details-${cveId}`);
+            if (expandedCVEs.has(cveId)) {
+                detailsElement.classList.remove('active');
+                expandedCVEs.delete(cveId);
+            } else {
+                detailsElement.classList.add('active');
+                expandedCVEs.add(cveId);
+            }
+        }
 
         const activeCVEs = [
             {
@@ -391,6 +622,28 @@
                                 </div>
                             </div>
 
+                            <!-- Expandable Details -->
+                            <div id="details-${cve.id}" class="expanded-details mb-4">
+                                <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700/30 space-y-3">
+                                    <div>
+                                        <div class="text-xs text-gray-400 mb-1">CVSS Vector</div>
+                                        <div class="text-sm text-gray-200 font-mono">CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400 mb-1">Attack Complexity</div>
+                                        <div class="text-sm text-gray-200">Low - No special conditions required</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-400 mb-1">References</div>
+                                        <div class="space-y-1">
+                                            <a href="#" class="text-sm text-cyan-400 hover:text-cyan-300 block">🔗 NVD Entry</a>
+                                            <a href="#" class="text-sm text-cyan-400 hover:text-cyan-300 block">🔗 Vendor Advisory</a>
+                                            ${cve.exploited ? '<a href="#" class="text-sm text-red-400 hover:text-red-300 block">⚠️ CISA KEV Catalog</a>' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="flex items-center justify-between text-xs text-gray-400">
                                 <div class="flex items-center space-x-4">
                                     <span>📅 Published: ${cve.published}</span>
@@ -398,10 +651,10 @@
                                     <span>🏢 Vendor: ${cve.vendor}</span>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <button class="px-3 py-1 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/30 rounded text-cyan-400 transition-all">
+                                    <button onclick="toggleDetails('${cve.id}')" class="px-3 py-1 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/30 rounded text-cyan-400 transition-all">
                                         View Details
                                     </button>
-                                    <button class="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded text-blue-400 transition-all">
+                                    <button onclick="openCategoryModal('${cve.category}', '${cve.vendor}')" class="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded text-blue-400 transition-all">
                                         Subscribe to Similar
                                     </button>
                                 </div>
