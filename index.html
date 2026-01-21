@@ -171,55 +171,120 @@
     <!-- Subscribe Modal -->
     <div id="subscribeModal" class="modal">
         <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-cyan-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-white">Subscribe to SecPulse</h3>
-                <button onclick="closeSubscribeModal()" class="text-gray-400 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <p class="text-gray-300 mb-6">Get daily CVE intelligence delivered to your inbox. Stay ahead of critical vulnerabilities.</p>
-            
-            <form onsubmit="handleSubscribe(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm text-gray-400 mb-2">Email Address</label>
-                    <input type="email" id="subscribeEmail" required placeholder="you@example.com" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+            <!-- Form View -->
+            <div id="subscribeFormView">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">Subscribe to SecPulse</h3>
+                    <button onclick="closeSubscribeModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
+                <p class="text-gray-300 mb-6">Get daily CVE intelligence delivered to your inbox. Stay ahead of critical vulnerabilities.</p>
                 
-                <div>
-                    <label class="block text-sm text-gray-400 mb-2">Frequency</label>
-                    <select class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none">
-                        <option>Daily Digest</option>
-                        <option>Weekly Summary</option>
-                        <option>Real-time Alerts (Critical only)</option>
-                    </select>
+                <form onsubmit="handleSubscribe(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Email Address</label>
+                        <input type="email" id="subscribeEmail" required placeholder="you@example.com" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Frequency</label>
+                        <select id="subscribeFrequency" class="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none">
+                            <option>Daily Digest</option>
+                            <option>Weekly Summary</option>
+                            <option>Real-time Alerts (Critical only)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-2">Severity Filter</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center text-sm text-gray-300">
+                                <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
+                                Critical (9.0+)
+                            </label>
+                            <label class="flex items-center text-sm text-gray-300">
+                                <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
+                                High (7.0-8.9)
+                            </label>
+                            <label class="flex items-center text-sm text-gray-300">
+                                <input type="checkbox" class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
+                                Medium (4.0-6.9)
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
+                        Subscribe Now
+                    </button>
+                </form>
+
+                <p class="text-xs text-gray-500 mt-4 text-center">No spam. Unsubscribe anytime.</p>
+            </div>
+
+            <!-- Success View (Hidden by default) -->
+            <div id="subscribeSuccessView" class="hidden text-center">
+                <div class="mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-2">Thank You!</h3>
+                    <p class="text-xl text-gray-300 mb-4">You're all set! 🎉</p>
                 </div>
 
-                <div>
-                    <label class="block text-sm text-gray-400 mb-2">Severity Filter</label>
-                    <div class="space-y-2">
-                        <label class="flex items-center text-sm text-gray-300">
-                            <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
-                            Critical (9.0+)
-                        </label>
-                        <label class="flex items-center text-sm text-gray-300">
-                            <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
-                            High (7.0-8.9)
-                        </label>
-                        <label class="flex items-center text-sm text-gray-300">
-                            <input type="checkbox" class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
-                            Medium (4.0-6.9)
-                        </label>
+                <div class="bg-slate-700/30 rounded-lg p-4 mb-6 border border-slate-600/50">
+                    <p class="text-sm text-gray-400 mb-2">We've sent a confirmation email to:</p>
+                    <p id="confirmedEmail" class="text-lg font-semibold text-cyan-400 mb-3"></p>
+                    <p class="text-sm text-gray-400 mb-1">Subscription preference:</p>
+                    <p id="confirmedFrequency" class="text-md text-white font-medium"></p>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3 text-left">
+                        <div class="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center mt-0.5">
+                            <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-white font-medium">Check your inbox</p>
+                            <p class="text-xs text-gray-400">Confirm your email to start receiving CVE alerts</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3 text-left">
+                        <div class="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center mt-0.5">
+                            <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-white font-medium">First digest coming soon</p>
+                            <p class="text-xs text-gray-400">Your next CVE update is on its way</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3 text-left">
+                        <div class="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center mt-0.5">
+                            <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-white font-medium">Manage preferences</p>
+                            <p class="text-xs text-gray-400">Update filters anytime from your emails</p>
+                        </div>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
-                    Subscribe Now
+                <button onclick="closeSubscribeModal()" class="w-full mt-6 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
+                    Done
                 </button>
-            </form>
-
-            <p class="text-xs text-gray-500 mt-4 text-center">No spam. Unsubscribe anytime.</p>
+            </div>
         </div>
     </div>
 
@@ -259,7 +324,7 @@
         let refreshInterval = null;
         let expandedCVEs = new Set();
 
-        // Auto-refresh functionality
+        const activeCVEs = [
         function toggleAutoRefresh() {
             autoRefreshEnabled = !autoRefreshEnabled;
             const toggle = document.getElementById('autoRefreshToggle');
@@ -335,9 +400,29 @@
         function handleSubscribe(event) {
             event.preventDefault();
             const email = document.getElementById('subscribeEmail').value;
-            showNotification(`Subscribed successfully! Welcome to SecPulse, ${email}`, 'success');
-            closeSubscribeModal();
+            const frequency = document.getElementById('subscribeFrequency').value;
+            
+            // Hide form view
+            document.getElementById('subscribeFormView').classList.add('hidden');
+            
+            // Show success view with user data
+            document.getElementById('confirmedEmail').textContent = email;
+            document.getElementById('confirmedFrequency').textContent = frequency;
+            document.getElementById('subscribeSuccessView').classList.remove('hidden');
+            
+            // Reset form for next time
             document.getElementById('subscribeEmail').value = '';
+        }
+        
+        // Reset modal when closing
+        function closeSubscribeModal() {
+            document.getElementById('subscribeModal').classList.remove('active');
+            
+            // Reset views after animation
+            setTimeout(() => {
+                document.getElementById('subscribeFormView').classList.remove('hidden');
+                document.getElementById('subscribeSuccessView').classList.add('hidden');
+            }, 300);
         }
 
         function handleCategorySubscribe() {
@@ -563,10 +648,14 @@
             }
         ];
 
-        function switchTab(tab) {
+        // Auto-refresh functionality
+        function toggleAutoRefresh() {
             currentTab = tab;
             const activeTabBtn = document.getElementById('activeTab');
             const patchedTabBtn = document.getElementById('patchedTab');
+            
+            // Clear expanded CVEs when switching tabs
+            expandedCVEs.clear();
             
             if (tab === 'active') {
                 activeTabBtn.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-semibold');
@@ -581,6 +670,11 @@
                 activeTabBtn.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-semibold');
                 renderCVEs(patchedCVEs);
             }
+        }
+        
+        function renderCVEs(cveList) {
+            const container = document.getElementById('cveContainer');
+            container.innerHTML = cveList.map((cve, index) => renderCVE(cve, index)).join('');
         }
 
         function getSeverityColor(severity) {
