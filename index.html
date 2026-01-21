@@ -154,24 +154,23 @@
         <div class="mb-6 border-b border-slate-700/50">
             <div class="flex space-x-6">
                 <button onclick="switchTab('active')" id="activeTab" class="px-4 py-3 text-cyan-400 border-b-2 border-cyan-400 font-semibold">
-                     Active Threats (8)
+                    🔥 Active Threats (8)
                 </button>
                 <button onclick="switchTab('patched')" id="patchedTab" class="px-4 py-3 text-gray-400 hover:text-white transition-colors">
-                     Recently Patched (5)
+                    ✅ Recently Patched (5)
                 </button>
             </div>
         </div>
 
-        <!-- CVE Cards -->
+        <!-- CVE Cards Container -->
         <div id="cveContainer" class="space-y-4">
-            <!-- CVE cards will be inserted here -->
+            <div class="text-center text-gray-400 py-12">Loading CVEs...</div>
         </div>
     </section>
 
     <!-- Subscribe Modal -->
     <div id="subscribeModal" class="modal">
         <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-cyan-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
-            <!-- Form View -->
             <div id="subscribeFormView">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-2xl font-bold text-white">Subscribe to SecPulse</h3>
@@ -181,7 +180,7 @@
                         </svg>
                     </button>
                 </div>
-                <p class="text-gray-300 mb-6">Get daily CVE intelligence delivered to your inbox. Stay ahead of critical vulnerabilities.</p>
+                <p class="text-gray-300 mb-6">Get daily CVE intelligence delivered to your inbox.</p>
                 
                 <form onsubmit="handleSubscribe(event)" class="space-y-4">
                     <div>
@@ -198,33 +197,12 @@
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-2">Severity Filter</label>
-                        <div class="space-y-2">
-                            <label class="flex items-center text-sm text-gray-300">
-                                <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
-                                Critical (9.0+)
-                            </label>
-                            <label class="flex items-center text-sm text-gray-300">
-                                <input type="checkbox" checked class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
-                                High (7.0-8.9)
-                            </label>
-                            <label class="flex items-center text-sm text-gray-300">
-                                <input type="checkbox" class="mr-2 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-500">
-                                Medium (4.0-6.9)
-                            </label>
-                        </div>
-                    </div>
-
                     <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
                         Subscribe Now
                     </button>
                 </form>
-
-                <p class="text-xs text-gray-500 mt-4 text-center">No spam. Unsubscribe anytime.</p>
             </div>
 
-            <!-- Success View (Hidden by default) -->
             <div id="subscribeSuccessView" class="hidden text-center">
                 <div class="mb-6">
                     <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -237,237 +215,31 @@
                 </div>
 
                 <div class="bg-slate-700/30 rounded-lg p-4 mb-6 border border-slate-600/50">
-                    <p class="text-sm text-gray-400 mb-2">We've sent a confirmation email to:</p>
+                    <p class="text-sm text-gray-400 mb-2">Confirmation sent to:</p>
                     <p id="confirmedEmail" class="text-lg font-semibold text-cyan-400 mb-3"></p>
-                    <p class="text-sm text-gray-400 mb-1">Subscription preference:</p>
+                    <p class="text-sm text-gray-400 mb-1">Preference:</p>
                     <p id="confirmedFrequency" class="text-md text-white font-medium"></p>
                 </div>
 
-                <div class="space-y-3">
-                    <div class="flex items-start space-x-3 text-left">
-                        <div class="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center mt-0.5">
-                            <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-white font-medium">Check your inbox</p>
-                            <p class="text-xs text-gray-400">Confirm your email to start receiving CVE alerts</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-3 text-left">
-                        <div class="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center mt-0.5">
-                            <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-white font-medium">First digest coming soon</p>
-                            <p class="text-xs text-gray-400">Your next CVE update is on its way</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-3 text-left">
-                        <div class="flex-shrink-0 w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center mt-0.5">
-                            <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm text-white font-medium">Manage preferences</p>
-                            <p class="text-xs text-gray-400">Update filters anytime from your emails</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button onclick="closeSubscribeModal()" class="w-full mt-6 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
+                <button onclick="closeSubscribeModal()" class="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition-all font-semibold">
                     Done
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Category Subscribe Modal -->
-    <div id="categoryModal" class="modal">
-        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-blue-500/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-white">Subscribe to Category</h3>
-                <button onclick="closeCategoryModal()" class="text-gray-400 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <p class="text-gray-300 mb-6">Get alerts for similar vulnerabilities in this category.</p>
-            
-            <div class="space-y-3 mb-6">
-                <div class="bg-slate-700/30 rounded-lg p-3 border border-slate-600/50">
-                    <div class="text-sm text-gray-400">Category</div>
-                    <div id="categoryName" class="text-white font-semibold">Web Application</div>
-                </div>
-                <div class="bg-slate-700/30 rounded-lg p-3 border border-slate-600/50">
-                    <div class="text-sm text-gray-400">Vendor</div>
-                    <div id="vendorName" class="text-white font-semibold">Microsoft</div>
-                </div>
-            </div>
-
-            <button onclick="handleCategorySubscribe()" class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold">
-                Subscribe to Similar CVEs
-            </button>
-        </div>
-    </div>
-
     <script>
+        // Global state
         let currentTab = 'active';
         let autoRefreshEnabled = true;
-        let refreshInterval = null;
         let expandedCVEs = new Set();
 
-        const activeCVEs = [
-        function toggleAutoRefresh() {
-            autoRefreshEnabled = !autoRefreshEnabled;
-            const toggle = document.getElementById('autoRefreshToggle');
-            const slider = document.getElementById('autoRefreshSlider');
-            
-            if (autoRefreshEnabled) {
-                toggle.classList.add('bg-cyan-600');
-                toggle.classList.remove('bg-slate-600');
-                slider.classList.add('right-0.5');
-                slider.classList.remove('left-0.5');
-                startAutoRefresh();
-                showNotification('Auto-refresh enabled', 'success');
-            } else {
-                toggle.classList.remove('bg-cyan-600');
-                toggle.classList.add('bg-slate-600');
-                slider.classList.remove('right-0.5');
-                slider.classList.add('left-0.5');
-                stopAutoRefresh();
-                showNotification('Auto-refresh disabled', 'info');
-            }
-        }
-
-        function startAutoRefresh() {
-            if (refreshInterval) clearInterval(refreshInterval);
-            refreshInterval = setInterval(() => {
-                showNotification('Checking for new CVEs...', 'info');
-                // Simulate refresh - in production this would fetch new data
-                setTimeout(() => {
-                    showNotification('You\'re up to date!', 'success');
-                }, 1000);
-            }, 120000); // Every 2 minutes (demo - production would be 2 hours)
-        }
-
-        function stopAutoRefresh() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-                refreshInterval = null;
-            }
-        }
-
-        // Modal functions
-        function openSubscribeModal() {
-            document.getElementById('subscribeModal').classList.add('active');
-        }
-
-        function closeSubscribeModal() {
-            document.getElementById('subscribeModal').classList.remove('active');
-        }
-
-        function openCategoryModal(category, vendor) {
-            document.getElementById('categoryName').textContent = category;
-            document.getElementById('vendorName').textContent = vendor;
-            document.getElementById('categoryModal').classList.add('active');
-        }
-
-        function closeCategoryModal() {
-            document.getElementById('categoryModal').classList.remove('active');
-        }
-
-        // Close modals on outside click
-        window.onclick = function(event) {
-            const subscribeModal = document.getElementById('subscribeModal');
-            const categoryModal = document.getElementById('categoryModal');
-            if (event.target === subscribeModal) {
-                closeSubscribeModal();
-            }
-            if (event.target === categoryModal) {
-                closeCategoryModal();
-            }
-        }
-
-        // Form submission
-        function handleSubscribe(event) {
-            event.preventDefault();
-            const email = document.getElementById('subscribeEmail').value;
-            const frequency = document.getElementById('subscribeFrequency').value;
-            
-            // Hide form view
-            document.getElementById('subscribeFormView').classList.add('hidden');
-            
-            // Show success view with user data
-            document.getElementById('confirmedEmail').textContent = email;
-            document.getElementById('confirmedFrequency').textContent = frequency;
-            document.getElementById('subscribeSuccessView').classList.remove('hidden');
-            
-            // Reset form for next time
-            document.getElementById('subscribeEmail').value = '';
-        }
-        
-        // Reset modal when closing
-        function closeSubscribeModal() {
-            document.getElementById('subscribeModal').classList.remove('active');
-            
-            // Reset views after animation
-            setTimeout(() => {
-                document.getElementById('subscribeFormView').classList.remove('hidden');
-                document.getElementById('subscribeSuccessView').classList.add('hidden');
-            }, 300);
-        }
-
-        function handleCategorySubscribe() {
-            const category = document.getElementById('categoryName').textContent;
-            showNotification(`Subscribed to ${category} CVE alerts!`, 'success');
-            closeCategoryModal();
-        }
-
-        // Notification system
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            const colors = {
-                success: 'from-green-500 to-green-700',
-                error: 'from-red-500 to-red-700',
-                info: 'from-blue-500 to-blue-700'
-            };
-            
-            notification.className = `fixed top-4 right-4 z-50 px-6 py-4 bg-gradient-to-r ${colors[type]} rounded-lg shadow-2xl text-white font-medium slide-in`;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateY(-20px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Toggle CVE details
-        function toggleDetails(cveId) {
-            const detailsElement = document.getElementById(`details-${cveId}`);
-            if (expandedCVEs.has(cveId)) {
-                detailsElement.classList.remove('active');
-                expandedCVEs.delete(cveId);
-            } else {
-                detailsElement.classList.add('active');
-                expandedCVEs.add(cveId);
-            }
-        }
-
+        // CVE Data
         const activeCVEs = [
             {
                 id: "CVE-2026-20876",
                 title: "Windows VBS Enclave Critical Privilege Escalation",
-                description: "Critical privilege escalation flaw in Windows Virtualization-Based Security (VBS) Enclave enables attackers to obtain Virtual Trust Level 2 (VTL2) privileges. This breaks the security boundary designed to protect Windows itself, allowing attackers to subvert security controls, establish deep persistence, and evade detection by compromising virtualization-based security.",
+                description: "Critical privilege escalation flaw in Windows Virtualization-Based Security (VBS) Enclave enables attackers to obtain Virtual Trust Level 2 (VTL2) privileges.",
                 cvss: 6.7,
                 severity: "CRITICAL",
                 category: "Operating System",
@@ -478,95 +250,30 @@
                 remediation: "Apply Microsoft January 2026 Patch Tuesday update KB5034889"
             },
             {
-                id: "CVE-2026-21265",
-                title: "Windows Secure Boot Certificate Expiration Bypass",
-                description: "Security feature bypass vulnerability affecting Secure Boot Certificate Expiration could allow attackers to undermine a crucial security mechanism that ensures firmware modules come from trusted sources. This prevents malware from being run during the boot process and compromises the entire chain of trust.",
-                cvss: 6.4,
-                severity: "HIGH",
-                category: "Operating System",
-                vendor: "Microsoft",
-                published: "2026-01-14",
-                exploited: false,
-                affectedProducts: ["Windows systems with Secure Boot enabled"],
-                remediation: "Update to 2023 Secure Boot certificates by June 2026 deadline"
-            },
-            {
-                id: "CVE-2025-59470",
-                title: "Veeam Backup & Replication Remote Code Execution",
-                description: "Critical vulnerability allows Backup or Tape Operator to perform remote code execution as the postgres user by sending malicious interval or order parameters. These roles are highly privileged and exploitation could lead to complete backup infrastructure compromise and data theft.",
-                cvss: 9.0,
-                severity: "CRITICAL",
-                category: "Enterprise Software",
-                vendor: "Veeam",
-                published: "2026-01-08",
-                exploited: false,
-                affectedProducts: ["Veeam Backup & Replication 13.0.1.180 and earlier v13 builds"],
-                remediation: "Upgrade to Veeam Backup & Replication 13.0.1.1071 immediately"
-            },
-            {
                 id: "CVE-2025-37164",
                 title: "HPE OneView Unauthenticated Remote Code Execution",
-                description: "Hewlett Packard Enterprise OneView contains a code injection vulnerability that allows a remote unauthenticated user to perform remote code execution. Added to CISA's Known Exploited Vulnerabilities catalog with active exploitation detected in the wild.",
+                description: "Code injection vulnerability allows remote unauthenticated RCE. Added to CISA KEV catalog with active exploitation.",
                 cvss: 9.8,
                 severity: "CRITICAL",
-                category: "Infrastructure Management",
+                category: "Infrastructure",
                 vendor: "HPE",
                 published: "2026-01-07",
                 exploited: true,
-                affectedProducts: ["HPE OneView 8.x and earlier versions"],
-                remediation: "Apply vendor patches immediately or discontinue use if unavailable"
-            },
-            {
-                id: "CVE-2025-24085",
-                title: "Apple Core Media Framework Zero-Day Actively Exploited",
-                description: "Use-after-free vulnerability in Core Media Framework's H.264/H.265 video parser enables privilege escalation and full device control via maliciously crafted media files. Successfully exploited in targeted spyware campaigns to achieve kernel-level access for data exfiltration. Often chained with WebKit flaws.",
-                cvss: 9.6,
-                severity: "CRITICAL",
-                category: "Mobile/Desktop OS",
-                vendor: "Apple",
-                published: "2026-01-03",
-                exploited: true,
-                affectedProducts: ["iOS < 17.2", "macOS < 14.3", "iPadOS < 17.2"],
-                remediation: "Update to iOS 17.2, macOS 14.3 or later; enable Lockdown Mode for high-risk users"
+                affectedProducts: ["HPE OneView 8.x and earlier"],
+                remediation: "Apply vendor patches immediately"
             },
             {
                 id: "CVE-2025-0282",
-                title: "Ivanti Connect Secure VPN Zero-Day (Nominet Breach)",
-                description: "Stack-based buffer overflow allowing unauthenticated remote code execution in Ivanti Connect Secure VPN. Exploited as zero-day before patch release on January 8, 2025. Confirmed breach at Nominet (.UK domain registry) with web shells deployed, security controls disabled, and reconnaissance activity observed.",
+                title: "Ivanti Connect Secure VPN Zero-Day",
+                description: "Stack-based buffer overflow allowing unauthenticated RCE. Exploited in Nominet (.UK registry) breach.",
                 cvss: 10.0,
                 severity: "CRITICAL",
                 category: "VPN/Remote Access",
                 vendor: "Ivanti",
                 published: "2025-12-30",
                 exploited: true,
-                affectedProducts: ["Ivanti Connect Secure all versions before patch"],
-                remediation: "Apply emergency patch released January 8, 2025; hunt for IOCs including PHASEJAM web shell"
-            },
-            {
-                id: "CVE-2025-53770",
-                title: "SharePoint ToolShell Zero-Day Insecure Deserialization",
-                description: "Insecure deserialization vulnerability in on-premises SharePoint Server enabling unauthenticated remote command execution and durable access. Attackers can establish persistent backdoors on vulnerable SharePoint deployments without any authentication, making this one of the defining SharePoint crises of 2025.",
-                cvss: 9.8,
-                severity: "CRITICAL",
-                category: "Enterprise Collaboration",
-                vendor: "Microsoft",
-                published: "2025-11-15",
-                exploited: true,
-                affectedProducts: ["SharePoint Server 2019", "SharePoint Server 2016"],
-                remediation: "Apply Microsoft security update; audit for unauthorized accounts and web shells"
-            },
-            {
-                id: "CVE-2025-8110",
-                title: "Gogs Path Traversal Leading to Code Execution",
-                description: "Path traversal vulnerability affecting improper symbolic link handling in the PutContents API that could allow for remote code execution. Attackers can leverage malicious symlinks to write files outside intended directories and execute arbitrary code on the Gogs server.",
-                cvss: 8.8,
-                severity: "HIGH",
-                category: "DevOps Tool",
-                vendor: "Gogs",
-                published: "2026-01-12",
-                exploited: false,
-                affectedProducts: ["Gogs versions before security patch"],
-                remediation: "Apply vendor patch from GitHub commit 553707f3fd5f68f47f531cfcff56aa3ec294c6f6"
+                affectedProducts: ["Ivanti Connect Secure all versions"],
+                remediation: "Apply emergency patch; hunt for PHASEJAM web shell"
             }
         ];
 
@@ -574,7 +281,7 @@
             {
                 id: "CVE-2025-55182",
                 title: "React2Shell - Critical React Server Components RCE",
-                description: "Critical unauthenticated remote code execution vulnerability in React Server Components (RSC) Flight protocol affecting React 19 and Next.js. Insecure deserialization allows attackers to execute arbitrary code via crafted HTTP POST requests. Exploited within hours of disclosure by China-nexus threat actors including Earth Lamia and Jackpot Panda. Near 100% exploit reliability with no authentication required.",
+                description: "Unauthenticated RCE in React Server Components. Exploited by China-nexus threat actors within hours of disclosure.",
                 cvss: 10.0,
                 severity: "CRITICAL",
                 category: "Web Framework",
@@ -582,177 +289,69 @@
                 published: "2025-12-03",
                 exploited: true,
                 patchedDate: "2025-12-03",
-                affectedProducts: ["React 19.0.0-19.2.0", "Next.js 15.x, 16.x with App Router", "React Router", "Waku", "RedwoodSDK"],
-                remediation: "PATCHED: React 19.0.3, 19.1.4, 19.2.3 | Next.js 15.0.5, 15.1.9, 15.2.6, 15.3.6, 15.4.8, 15.5.7, 16.0.7",
-                patchStatus: "FIXED"
-            },
-            {
-                id: "CVE-2025-55184",
-                title: "React Server Components Denial of Service",
-                description: "High-severity DoS vulnerability in React Server Components allowing malicious HTTP requests to trigger infinite loops, denying service to legitimate users. Attackers can create performance impact on server environments without authentication. Originally patched incompletely, requiring additional fix in CVE-2025-67779.",
-                cvss: 7.5,
-                severity: "HIGH",
-                category: "Web Framework",
-                vendor: "React/Meta",
-                published: "2025-12-11",
-                exploited: false,
-                patchedDate: "2025-12-11",
-                affectedProducts: ["React 19.0.0-19.0.2, 19.1.0-19.1.3, 19.2.0-19.2.2"],
-                remediation: "PATCHED: Upgrade to React 19.0.3, 19.1.4, 19.2.3 or later",
-                patchStatus: "FIXED"
-            },
-            {
-                id: "CVE-2025-55183",
-                title: "React Server Components Source Code Exposure",
-                description: "Medium-severity vulnerability allowing malicious HTTP requests to unsafely return source code of Server Functions. Exploitation requires Server Functions that explicitly or implicitly expose stringified arguments, potentially leaking sensitive credentials, database connection strings, and proprietary business logic embedded in server-side code.",
-                cvss: 5.3,
-                severity: "MEDIUM",
-                category: "Web Framework",
-                vendor: "React/Meta",
-                published: "2025-12-11",
-                exploited: false,
-                patchedDate: "2025-12-11",
-                affectedProducts: ["React Server Components with exposed Server Functions"],
-                remediation: "PATCHED: Apply latest React patches 19.0.3+, 19.1.4+, 19.2.3+",
-                patchStatus: "FIXED"
-            },
-            {
-                id: "CVE-2025-67779",
-                title: "React Server Components Additional DoS Bypass",
-                description: "Additional denial of service cases discovered after initial CVE-2025-55184 patch was found to be incomplete. This CVE addresses missing DoS mitigation in versions 19.0.2, 19.1.3, and 19.2.2 that remained vulnerable after the first patch. Demonstrates importance of thorough security testing and patch validation.",
-                cvss: 7.5,
-                severity: "HIGH",
-                category: "Web Framework",
-                vendor: "React/Meta",
-                published: "2025-12-11",
-                exploited: false,
-                patchedDate: "2025-12-11",
-                affectedProducts: ["React 19.0.2, 19.1.3, 19.2.2"],
-                remediation: "PATCHED: Upgrade to React 19.0.3, 19.1.4, 19.2.3 (addresses all DoS variants)",
+                affectedProducts: ["React 19.0.0-19.2.0", "Next.js 15.x, 16.x"],
+                remediation: "PATCHED: React 19.0.3, 19.1.4, 19.2.3 | Next.js 15.0.5+, 16.0.7+",
                 patchStatus: "FIXED"
             },
             {
                 id: "CVE-2025-1338",
                 title: "Chromium Use-After-Free in UI Framework",
-                description: "Use-after-free vulnerability in Chromium's UI framework allowing attackers to execute arbitrary code via crafted HTML pages. Exploited alongside CVE-2025-55182 by threat actors in coordinated campaigns targeting multiple recent N-day vulnerabilities simultaneously. Affects all Chromium-based browsers including Chrome, Edge, Brave, and Electron applications.",
+                description: "Use-after-free in Chromium UI allowing code execution. Exploited alongside CVE-2025-55182.",
                 cvss: 8.8,
                 severity: "HIGH",
-                category: "Browser/Electron",
+                category: "Browser",
                 vendor: "Google",
                 published: "2025-12-05",
                 exploited: true,
                 patchedDate: "2025-12-08",
-                affectedProducts: ["Chrome < 131.0.6778.85", "Edge < 131.0.2903.63", "Electron apps using old Chromium"],
-                remediation: "PATCHED: Update to Chrome 131.0.6778.85+, Edge 131.0.2903.63+ or later",
+                affectedProducts: ["Chrome < 131.0.6778.85", "Edge < 131.0.2903.63"],
+                remediation: "PATCHED: Chrome 131.0.6778.85+, Edge 131.0.2903.63+",
                 patchStatus: "FIXED"
             }
         ];
 
-        // Auto-refresh functionality
-        function toggleAutoRefresh() {
-            currentTab = tab;
-            const activeTabBtn = document.getElementById('activeTab');
-            const patchedTabBtn = document.getElementById('patchedTab');
-            
-            // Clear expanded CVEs when switching tabs
-            expandedCVEs.clear();
-            
-            if (tab === 'active') {
-                activeTabBtn.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-semibold');
-                activeTabBtn.classList.remove('text-gray-400');
-                patchedTabBtn.classList.add('text-gray-400');
-                patchedTabBtn.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-semibold');
-                renderCVEs(activeCVEs);
-            } else {
-                patchedTabBtn.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-semibold');
-                patchedTabBtn.classList.remove('text-gray-400');
-                activeTabBtn.classList.add('text-gray-400');
-                activeTabBtn.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'font-semibold');
-                renderCVEs(patchedCVEs);
-            }
-        }
-        
-        function renderCVEs(cveList) {
-            const container = document.getElementById('cveContainer');
-            container.innerHTML = cveList.map((cve, index) => renderCVE(cve, index)).join('');
-        }
-
+        // Helper functions
         function getSeverityColor(severity) {
-            switch(severity) {
-                case 'CRITICAL': return 'from-red-500 to-red-700';
-                case 'HIGH': return 'from-orange-500 to-orange-700';
-                case 'MEDIUM': return 'from-yellow-500 to-yellow-700';
-                default: return 'from-blue-500 to-blue-700';
-            }
+            const colors = {
+                'CRITICAL': 'from-red-500 to-red-700',
+                'HIGH': 'from-orange-500 to-orange-700',
+                'MEDIUM': 'from-yellow-500 to-yellow-700'
+            };
+            return colors[severity] || 'from-blue-500 to-blue-700';
         }
 
         function renderCVE(cve, index) {
             const isPatchedTab = currentTab === 'patched';
             return `
                 <div class="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:border-cyan-500/50 transition-all slide-in" style="animation-delay: ${index * 0.1}s">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-3 mb-2">
-                                <span class="text-cyan-400 font-mono text-sm font-bold">${cve.id}</span>
-                                <span class="px-3 py-1 bg-gradient-to-r ${getSeverityColor(cve.severity)} rounded-full text-xs font-bold">
-                                    ${cve.severity} ${cve.cvss}
-                                </span>
-                                ${isPatchedTab ? '<span class="px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full text-xs font-bold text-green-400">✅ PATCHED</span>' : ''}
-                                ${!isPatchedTab && cve.exploited ? '<span class="px-3 py-1 bg-red-500/20 border border-red-500/50 rounded-full text-xs font-bold text-red-400">🔥 ACTIVELY EXPLOITED</span>' : ''}
-                                ${isPatchedTab && cve.exploited ? '<span class="px-3 py-1 bg-orange-500/20 border border-orange-500/50 rounded-full text-xs font-bold text-orange-400">⚠️ WAS EXPLOITED</span>' : ''}
-                                <span class="px-3 py-1 bg-slate-700/50 rounded-full text-xs text-gray-300">${cve.category}</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-2">${cve.title}</h3>
-                            <p class="text-gray-300 text-sm leading-relaxed mb-4">${cve.description}</p>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/30">
-                                    <div class="text-xs text-gray-400 mb-1">Affected Products</div>
-                                    <div class="text-sm text-gray-200">${cve.affectedProducts.join(', ')}</div>
-                                </div>
-                                <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/30">
-                                    <div class="text-xs text-gray-400 mb-1">${isPatchedTab ? 'Patch Information' : 'Remediation'}</div>
-                                    <div class="text-sm ${isPatchedTab ? 'text-green-400' : 'text-green-400'}">${cve.remediation}</div>
-                                </div>
-                            </div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <span class="text-cyan-400 font-mono text-sm font-bold">${cve.id}</span>
+                        <span class="px-3 py-1 bg-gradient-to-r ${getSeverityColor(cve.severity)} rounded-full text-xs font-bold">
+                            ${cve.severity} ${cve.cvss}
+                        </span>
+                        ${isPatchedTab ? '<span class="px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full text-xs font-bold text-green-400">✅ PATCHED</span>' : ''}
+                        ${!isPatchedTab && cve.exploited ? '<span class="px-3 py-1 bg-red-500/20 border border-red-500/50 rounded-full text-xs font-bold text-red-400">🔥 ACTIVELY EXPLOITED</span>' : ''}
+                        ${isPatchedTab && cve.exploited ? '<span class="px-3 py-1 bg-orange-500/20 border border-orange-500/50 rounded-full text-xs font-bold text-orange-400">⚠️ WAS EXPLOITED</span>' : ''}
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">${cve.title}</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-4">${cve.description}</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/30">
+                            <div class="text-xs text-gray-400 mb-1">Affected Products</div>
+                            <div class="text-sm text-gray-200">${cve.affectedProducts.join(', ')}</div>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/30">
+                            <div class="text-xs text-gray-400 mb-1">Remediation</div>
+                            <div class="text-sm text-green-400">${cve.remediation}</div>
+                        </div>
+                    </div>
 
-                            <!-- Expandable Details -->
-                            <div id="details-${cve.id}" class="expanded-details mb-4">
-                                <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700/30 space-y-3">
-                                    <div>
-                                        <div class="text-xs text-gray-400 mb-1">CVSS Vector</div>
-                                        <div class="text-sm text-gray-200 font-mono">CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs text-gray-400 mb-1">Attack Complexity</div>
-                                        <div class="text-sm text-gray-200">Low - No special conditions required</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-xs text-gray-400 mb-1">References</div>
-                                        <div class="space-y-1">
-                                            <a href="#" class="text-sm text-cyan-400 hover:text-cyan-300 block">🔗 NVD Entry</a>
-                                            <a href="#" class="text-sm text-cyan-400 hover:text-cyan-300 block">🔗 Vendor Advisory</a>
-                                            ${cve.exploited ? '<a href="#" class="text-sm text-red-400 hover:text-red-300 block">⚠️ CISA KEV Catalog</a>' : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center justify-between text-xs text-gray-400">
-                                <div class="flex items-center space-x-4">
-                                    <span>📅 Published: ${cve.published}</span>
-                                    ${isPatchedTab ? `<span>🛡️ Patched: ${cve.patchedDate}</span>` : ''}
-                                    <span>🏢 Vendor: ${cve.vendor}</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <button onclick="toggleDetails('${cve.id}')" class="px-3 py-1 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/30 rounded text-cyan-400 transition-all">
-                                        View Details
-                                    </button>
-                                    <button onclick="openCategoryModal('${cve.category}', '${cve.vendor}')" class="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 rounded text-blue-400 transition-all">
-                                        Subscribe to Similar
-                                    </button>
-                                </div>
-                            </div>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <div class="flex items-center space-x-4">
+                            <span>📅 ${cve.published}</span>
+                            ${isPatchedTab ? `<span>🛡️ Patched: ${cve.patchedDate}</span>` : ''}
+                            <span>🏢 ${cve.vendor}</span>
                         </div>
                     </div>
                 </div>
@@ -761,10 +360,77 @@
 
         function renderCVEs(cveList) {
             const container = document.getElementById('cveContainer');
+            if (!container) return;
             container.innerHTML = cveList.map((cve, index) => renderCVE(cve, index)).join('');
         }
 
-        // Initial render
-        renderCVEs(activeCVEs);
+        function switchTab(tab) {
+            currentTab = tab;
+            const activeTabBtn = document.getElementById('activeTab');
+            const patchedTabBtn = document.getElementById('patchedTab');
+            
+            if (tab === 'active') {
+                activeTabBtn.className = 'px-4 py-3 text-cyan-400 border-b-2 border-cyan-400 font-semibold';
+                patchedTabBtn.className = 'px-4 py-3 text-gray-400 hover:text-white transition-colors';
+                renderCVEs(activeCVEs);
+            } else {
+                patchedTabBtn.className = 'px-4 py-3 text-cyan-400 border-b-2 border-cyan-400 font-semibold';
+                activeTabBtn.className = 'px-4 py-3 text-gray-400 hover:text-white transition-colors';
+                renderCVEs(patchedCVEs);
+            }
+        }
+
+        function toggleAutoRefresh() {
+            autoRefreshEnabled = !autoRefreshEnabled;
+            const toggle = document.getElementById('autoRefreshToggle');
+            const slider = document.getElementById('autoRefreshSlider');
+            
+            if (autoRefreshEnabled) {
+                toggle.className = 'w-12 h-6 bg-cyan-600 rounded-full relative cursor-pointer transition-all';
+                slider.className = 'w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5 transition-all';
+            } else {
+                toggle.className = 'w-12 h-6 bg-slate-600 rounded-full relative cursor-pointer transition-all';
+                slider.className = 'w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 transition-all';
+            }
+        }
+
+        function openSubscribeModal() {
+            document.getElementById('subscribeModal').classList.add('active');
+        }
+
+        function closeSubscribeModal() {
+            document.getElementById('subscribeModal').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('subscribeFormView').classList.remove('hidden');
+                document.getElementById('subscribeSuccessView').classList.add('hidden');
+            }, 300);
+        }
+
+        function handleSubscribe(event) {
+            event.preventDefault();
+            const email = document.getElementById('subscribeEmail').value;
+            const frequency = document.getElementById('subscribeFrequency').value;
+            
+            document.getElementById('subscribeFormView').classList.add('hidden');
+            document.getElementById('confirmedEmail').textContent = email;
+            document.getElementById('confirmedFrequency').textContent = frequency;
+            document.getElementById('subscribeSuccessView').classList.remove('hidden');
+            
+            document.getElementById('subscribeEmail').value = '';
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('subscribeModal');
+            if (event.target === modal) {
+                closeSubscribeModal();
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCVEs(activeCVEs);
+        });
+    </script>
 </body>
 </html>
