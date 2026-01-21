@@ -154,10 +154,10 @@
         <div class="mb-6 border-b border-slate-700/50">
             <div class="flex space-x-6">
                 <button onclick="switchTab('active')" id="activeTab" class="px-4 py-3 text-cyan-400 border-b-2 border-cyan-400 font-semibold">
-                    🔥 Active Threats (8)
+                     Active Threats (10)
                 </button>
                 <button onclick="switchTab('patched')" id="patchedTab" class="px-4 py-3 text-gray-400 hover:text-white transition-colors">
-                    ✅ Recently Patched (5)
+                     Recently Patched (10)
                 </button>
             </div>
         </div>
@@ -239,7 +239,7 @@
             {
                 id: "CVE-2026-20876",
                 title: "Windows VBS Enclave Critical Privilege Escalation",
-                description: "Critical privilege escalation flaw in Windows Virtualization-Based Security (VBS) Enclave enables attackers to obtain Virtual Trust Level 2 (VTL2) privileges.",
+                description: "Critical privilege escalation flaw in Windows Virtualization-Based Security (VBS) Enclave enables attackers to obtain Virtual Trust Level 2 (VTL2) privileges. Breaks security boundary designed to protect Windows itself.",
                 cvss: 6.7,
                 severity: "CRITICAL",
                 category: "Operating System",
@@ -250,30 +250,121 @@
                 remediation: "Apply Microsoft January 2026 Patch Tuesday update KB5034889"
             },
             {
+                id: "CVE-2026-21265",
+                title: "Windows Secure Boot Certificate Expiration Bypass",
+                description: "Security feature bypass vulnerability affecting Secure Boot Certificate Expiration. Allows attackers to undermine firmware trust mechanism and run malware during boot process.",
+                cvss: 6.4,
+                severity: "HIGH",
+                category: "Operating System",
+                vendor: "Microsoft",
+                published: "2026-01-14",
+                exploited: false,
+                affectedProducts: ["Windows systems with Secure Boot enabled"],
+                remediation: "Update to 2023 Secure Boot certificates by June 2026 deadline"
+            },
+            {
+                id: "CVE-2025-59470",
+                title: "Veeam Backup & Replication Remote Code Execution",
+                description: "Critical vulnerability allows Backup or Tape Operator to perform remote code execution as postgres user. Could lead to complete backup infrastructure compromise and data theft.",
+                cvss: 9.0,
+                severity: "CRITICAL",
+                category: "Enterprise Software",
+                vendor: "Veeam",
+                published: "2026-01-08",
+                exploited: false,
+                affectedProducts: ["Veeam Backup & Replication 13.0.1.180 and earlier v13 builds"],
+                remediation: "Upgrade to Veeam Backup & Replication 13.0.1.1071 immediately"
+            },
+            {
                 id: "CVE-2025-37164",
                 title: "HPE OneView Unauthenticated Remote Code Execution",
-                description: "Code injection vulnerability allows remote unauthenticated RCE. Added to CISA KEV catalog with active exploitation.",
+                description: "Code injection vulnerability allows remote unauthenticated RCE. Added to CISA Known Exploited Vulnerabilities catalog with active exploitation detected in the wild.",
                 cvss: 9.8,
                 severity: "CRITICAL",
-                category: "Infrastructure",
+                category: "Infrastructure Management",
                 vendor: "HPE",
                 published: "2026-01-07",
                 exploited: true,
-                affectedProducts: ["HPE OneView 8.x and earlier"],
-                remediation: "Apply vendor patches immediately"
+                affectedProducts: ["HPE OneView 8.x and earlier versions"],
+                remediation: "Apply vendor patches immediately or discontinue use if unavailable"
+            },
+            {
+                id: "CVE-2025-24085",
+                title: "Apple Core Media Framework Zero-Day Actively Exploited",
+                description: "Use-after-free vulnerability in Core Media Framework's H.264/H.265 video parser enables privilege escalation. Exploited in targeted spyware campaigns for kernel-level access and data exfiltration.",
+                cvss: 9.6,
+                severity: "CRITICAL",
+                category: "Mobile/Desktop OS",
+                vendor: "Apple",
+                published: "2026-01-03",
+                exploited: true,
+                affectedProducts: ["iOS < 17.2", "macOS < 14.3", "iPadOS < 17.2"],
+                remediation: "Update to iOS 17.2, macOS 14.3 or later; enable Lockdown Mode for high-risk users"
             },
             {
                 id: "CVE-2025-0282",
-                title: "Ivanti Connect Secure VPN Zero-Day",
-                description: "Stack-based buffer overflow allowing unauthenticated RCE. Exploited in Nominet (.UK registry) breach.",
+                title: "Ivanti Connect Secure VPN Zero-Day (Nominet Breach)",
+                description: "Stack-based buffer overflow allowing unauthenticated RCE. Exploited as zero-day before patch in confirmed breach at Nominet (.UK domain registry) with web shells deployed.",
                 cvss: 10.0,
                 severity: "CRITICAL",
                 category: "VPN/Remote Access",
                 vendor: "Ivanti",
                 published: "2025-12-30",
                 exploited: true,
-                affectedProducts: ["Ivanti Connect Secure all versions"],
-                remediation: "Apply emergency patch; hunt for PHASEJAM web shell"
+                affectedProducts: ["Ivanti Connect Secure all versions before patch"],
+                remediation: "Apply emergency patch released January 8, 2025; hunt for PHASEJAM web shell IOCs"
+            },
+            {
+                id: "CVE-2025-53770",
+                title: "SharePoint ToolShell Zero-Day Insecure Deserialization",
+                description: "Insecure deserialization in SharePoint Server enabling unauthenticated RCE and durable access. Attackers can establish persistent backdoors without authentication - defining SharePoint crisis of 2025.",
+                cvss: 9.8,
+                severity: "CRITICAL",
+                category: "Enterprise Collaboration",
+                vendor: "Microsoft",
+                published: "2025-11-15",
+                exploited: true,
+                affectedProducts: ["SharePoint Server 2019", "SharePoint Server 2016"],
+                remediation: "Apply Microsoft security update; audit for unauthorized accounts and web shells"
+            },
+            {
+                id: "CVE-2025-8110",
+                title: "Gogs Path Traversal Leading to Code Execution",
+                description: "Path traversal vulnerability affecting improper symbolic link handling in PutContents API. Attackers can leverage malicious symlinks to write files outside intended directories and execute arbitrary code.",
+                cvss: 8.8,
+                severity: "HIGH",
+                category: "DevOps Tool",
+                vendor: "Gogs",
+                published: "2026-01-12",
+                exploited: false,
+                affectedProducts: ["Gogs versions before security patch"],
+                remediation: "Apply vendor patch from GitHub commit 553707f3fd5f68f47f531cfcff56aa3ec294c6f6"
+            },
+            {
+                id: "CVE-2025-21298",
+                title: "FortiOS SSL VPN Buffer Overflow RCE",
+                description: "Heap-based buffer overflow in FortiOS SSL VPN web portal allows unauthenticated remote code execution. Multiple threat groups actively scanning for vulnerable devices following public disclosure.",
+                cvss: 9.8,
+                severity: "CRITICAL",
+                category: "Network Security",
+                vendor: "Fortinet",
+                published: "2026-01-10",
+                exploited: true,
+                affectedProducts: ["FortiOS 7.0.0 - 7.0.13", "FortiOS 7.2.0 - 7.2.6", "FortiOS 7.4.0 - 7.4.2"],
+                remediation: "Upgrade to FortiOS 7.0.14, 7.2.7, or 7.4.3; disable SSL VPN if not required"
+            },
+            {
+                id: "CVE-2025-3094",
+                title: "GitLab Critical Authentication Bypass",
+                description: "Authentication bypass in GitLab CE/EE allows attackers to impersonate any user without credentials. Enables unauthorized code commits, CI/CD pipeline manipulation, and secrets exfiltration.",
+                cvss: 9.9,
+                severity: "CRITICAL",
+                category: "DevOps Platform",
+                vendor: "GitLab",
+                published: "2026-01-09",
+                exploited: false,
+                affectedProducts: ["GitLab CE/EE 16.7.0 - 16.7.5", "GitLab 16.8.0 - 16.8.2"],
+                remediation: "Upgrade to GitLab 16.7.6, 16.8.3, or 16.9.0 immediately; review audit logs for suspicious activity"
             }
         ];
 
@@ -281,7 +372,7 @@
             {
                 id: "CVE-2025-55182",
                 title: "React2Shell - Critical React Server Components RCE",
-                description: "Unauthenticated RCE in React Server Components. Exploited by China-nexus threat actors within hours of disclosure.",
+                description: "Critical unauthenticated RCE in React Server Components Flight protocol. Insecure deserialization allows arbitrary code execution. Exploited by China-nexus APT groups within hours of disclosure with near 100% reliability.",
                 cvss: 10.0,
                 severity: "CRITICAL",
                 category: "Web Framework",
@@ -289,23 +380,143 @@
                 published: "2025-12-03",
                 exploited: true,
                 patchedDate: "2025-12-03",
-                affectedProducts: ["React 19.0.0-19.2.0", "Next.js 15.x, 16.x"],
-                remediation: "PATCHED: React 19.0.3, 19.1.4, 19.2.3 | Next.js 15.0.5+, 16.0.7+",
+                affectedProducts: ["React 19.0.0-19.2.0", "Next.js 15.x/16.x with App Router", "React Router", "Waku", "RedwoodSDK"],
+                remediation: "PATCHED: React 19.0.3, 19.1.4, 19.2.3 | Next.js 15.0.5, 16.0.7",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2025-55184",
+                title: "React Server Components Denial of Service",
+                description: "High-severity DoS vulnerability in React Server Components allowing malicious HTTP requests to trigger infinite loops. Originally patched incompletely, requiring additional fix in CVE-2025-67779.",
+                cvss: 7.5,
+                severity: "HIGH",
+                category: "Web Framework",
+                vendor: "React/Meta",
+                published: "2025-12-11",
+                exploited: false,
+                patchedDate: "2025-12-11",
+                affectedProducts: ["React 19.0.0-19.0.2", "React 19.1.0-19.1.3", "React 19.2.0-19.2.2"],
+                remediation: "PATCHED: Upgrade to React 19.0.3, 19.1.4, 19.2.3 or later",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2025-55183",
+                title: "React Server Components Source Code Exposure",
+                description: "Medium-severity vulnerability allowing malicious HTTP requests to expose source code of Server Functions. Can leak sensitive credentials, database strings, and proprietary business logic.",
+                cvss: 5.3,
+                severity: "MEDIUM",
+                category: "Web Framework",
+                vendor: "React/Meta",
+                published: "2025-12-11",
+                exploited: false,
+                patchedDate: "2025-12-11",
+                affectedProducts: ["React Server Components with exposed Server Functions"],
+                remediation: "PATCHED: Apply React patches 19.0.3+, 19.1.4+, 19.2.3+",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2025-67779",
+                title: "React Server Components Additional DoS Bypass",
+                description: "Additional DoS cases after initial CVE-2025-55184 patch was incomplete. Addresses missing DoS mitigation in versions 19.0.2, 19.1.3, and 19.2.2 that remained vulnerable after first patch.",
+                cvss: 7.5,
+                severity: "HIGH",
+                category: "Web Framework",
+                vendor: "React/Meta",
+                published: "2025-12-11",
+                exploited: false,
+                patchedDate: "2025-12-11",
+                affectedProducts: ["React 19.0.2", "React 19.1.3", "React 19.2.2"],
+                remediation: "PATCHED: Upgrade to React 19.0.3, 19.1.4, 19.2.3 (addresses all DoS variants)",
                 patchStatus: "FIXED"
             },
             {
                 id: "CVE-2025-1338",
                 title: "Chromium Use-After-Free in UI Framework",
-                description: "Use-after-free in Chromium UI allowing code execution. Exploited alongside CVE-2025-55182.",
+                description: "Use-after-free vulnerability in Chromium UI framework allowing code execution via crafted HTML. Exploited alongside CVE-2025-55182 in coordinated campaigns. Affects Chrome, Edge, Brave, Electron apps.",
                 cvss: 8.8,
                 severity: "HIGH",
-                category: "Browser",
+                category: "Browser/Electron",
                 vendor: "Google",
                 published: "2025-12-05",
                 exploited: true,
                 patchedDate: "2025-12-08",
-                affectedProducts: ["Chrome < 131.0.6778.85", "Edge < 131.0.2903.63"],
-                remediation: "PATCHED: Chrome 131.0.6778.85+, Edge 131.0.2903.63+",
+                affectedProducts: ["Chrome < 131.0.6778.85", "Edge < 131.0.2903.63", "Electron apps using old Chromium"],
+                remediation: "PATCHED: Update to Chrome 131.0.6778.85+, Edge 131.0.2903.63+ or later",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2024-12543",
+                title: "Apache Struts 2 Remote Code Execution",
+                description: "Path traversal and OGNL injection in Struts 2 file upload mechanism allows remote code execution. Widely exploited against enterprise Java applications. One of the most critical Struts vulnerabilities in recent years.",
+                cvss: 9.5,
+                severity: "CRITICAL",
+                category: "Web Application",
+                vendor: "Apache",
+                published: "2024-12-10",
+                exploited: true,
+                patchedDate: "2024-12-12",
+                affectedProducts: ["Apache Struts 2.0.0 - 2.5.32", "Struts 6.0.0 - 6.3.0"],
+                remediation: "PATCHED: Upgrade to Struts 2.5.33 or 6.3.1 immediately",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2024-9680",
+                title: "Firefox Animation Timeline Use-After-Free",
+                description: "Use-after-free in Firefox Animation timeline component enabled sandbox escape and arbitrary code execution. Exploited as zero-day in targeted attacks before Mozilla issued emergency patch.",
+                cvss: 9.8,
+                severity: "CRITICAL",
+                category: "Browser",
+                vendor: "Mozilla",
+                published: "2024-10-09",
+                exploited: true,
+                patchedDate: "2024-10-10",
+                affectedProducts: ["Firefox < 131.0.2", "Firefox ESR < 128.3.1", "Thunderbird < 131.0"],
+                remediation: "PATCHED: Update to Firefox 131.0.2, Firefox ESR 128.3.1, Thunderbird 131.0",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2024-50623",
+                title: "WordPress Jetpack Critical Authentication Bypass",
+                description: "Authentication bypass in WordPress Jetpack plugin allows unauthenticated attackers to gain admin access. Affects millions of WordPress installations. Mass exploitation observed within 48 hours of disclosure.",
+                cvss: 9.8,
+                severity: "CRITICAL",
+                category: "CMS Plugin",
+                vendor: "Automattic",
+                published: "2024-11-20",
+                exploited: true,
+                patchedDate: "2024-11-21",
+                affectedProducts: ["Jetpack plugin < 13.0.1"],
+                remediation: "PATCHED: Update to Jetpack 13.0.1 or later; review user accounts for unauthorized admins",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2024-47575",
+                title: "Kubernetes Ingress-NGINX Path Sanitization Bypass",
+                description: "Path sanitization bypass in Kubernetes ingress-nginx controller allows attackers to access restricted paths and credentials. Critical for cloud-native deployments with exposed ingress controllers.",
+                cvss: 8.6,
+                severity: "HIGH",
+                category: "Container Orchestration",
+                vendor: "Kubernetes",
+                published: "2024-11-05",
+                exploited: false,
+                patchedDate: "2024-11-06",
+                affectedProducts: ["ingress-nginx < 1.9.5", "ingress-nginx < 1.10.0"],
+                remediation: "PATCHED: Upgrade to ingress-nginx 1.9.5, 1.10.0 or later",
+                patchStatus: "FIXED"
+            },
+            {
+                id: "CVE-2024-43093",
+                title: "Android System Component Privilege Escalation",
+                description: "Elevation of privilege vulnerability in Android Framework component allows local apps to gain system-level privileges. Exploited by malware to bypass Android security controls and install persistent rootkits.",
+                cvss: 7.8,
+                severity: "HIGH",
+                category: "Mobile OS",
+                vendor: "Google",
+                published: "2024-10-07",
+                exploited: true,
+                patchedDate: "2024-10-07",
+                affectedProducts: ["Android 12, 12L, 13, 14"],
+                remediation: "PATCHED: Apply October 2024 Android security update",
                 patchStatus: "FIXED"
             }
         ];
